@@ -1,6 +1,10 @@
 class Seeder
 
   class << self
+    QUOTING = {
+      "ActiveRecord::ConnectionAdapters::MysqlAdapter"  => "`",
+      "ActiveRecord::ConnectionAdapters::Mysql2Adapter" => "`"
+    }
 
     def existing_data_keys(ar_model)
       keys = @primary_keys[ar_model.name]
@@ -25,17 +29,29 @@ class Seeder
       end
     end
 
+    def quote(value)
+      q = QUOTING[ActiveRecord::Base.connection.class.to_s] || "'"
+      "#{q}#{value}#{q}"
+    end
+
     def add_new_or_changed_data(ar_model)
       keys = @primary_keys[ar_model.name]
       find_method = "find_by_#{keys.join('_and_')}"
+
       @data[ar_model.name].collect do |attributes|
         relevant_keys = attributes.keys & ar_model.column_names.map(&:to_sym)
         existing = ar_model.send(find_method, *attributes.values_at(*keys))
-        next if existing && attributes.values_at(*relevant_keys) == existing.attributes.symbolize_keys.values_at(*relevant_keys)
         values = attributes.values_at(*relevant_keys)
-        %{
-          INSERT INTO #{ar_model.table_name} (#{relevant_keys.map{|col| "`#{col}`"}.join(', ')}) VALUES (#{values.map{|val| value_to_sql(val)}.join(', ')}) ON DUPLICATE KEY UPDATE #{relevant_keys.map{|col| "`#{col}` = VALUES(`#{col}`)"}.join(', ')}
-        }
+
+        if existing
+         updates    = attributes.slice(*relevant_keys).map { |k,v| "#{quote(k)} = #{value_to_sql(v)}" }.join(", ")
+          conditions = keys.map { |k| "#{quote(k)} = #{value_to_sql(existing.send(k))}" }.join(" AND ")
+          %(UPDATE #{ar_model.table_name} SET #{updates} WHERE #{conditions})
+        else
+          columns = relevant_keys.join(", ")
+          inserts = attributes.slice(*relevant_keys).values.map { |v| value_to_sql(v) }.join(", ")
+          %(INSERT INTO #{ar_model.table_name} (#{columns}) VALUES (#{inserts}))
+        end
       end.compact
     end
 
