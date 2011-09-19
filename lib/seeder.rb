@@ -30,7 +30,7 @@ class Seeder
     end
 
     def quote(value)
-      q = QUOTING[ActiveRecord::Base.connection.class.to_s] || "'"
+      q = QUOTING[ActiveRecord::Base.connection.class.to_s] || '"'
       "#{q}#{value}#{q}"
     end
 
@@ -44,7 +44,7 @@ class Seeder
         values = attributes.values_at(*relevant_keys)
 
         if existing
-         updates    = attributes.slice(*relevant_keys).map { |k,v| "#{quote(k)} = #{value_to_sql(v)}" }.join(", ")
+          updates    = attributes.slice(*relevant_keys).map { |k,v| "#{quote(k)} = #{value_to_sql(v)}" }.join(", ")
           conditions = keys.map { |k| "#{quote(k)} = #{value_to_sql(existing.send(k))}" }.join(" AND ")
           %(UPDATE #{ar_model.table_name} SET #{updates} WHERE #{conditions})
         else
