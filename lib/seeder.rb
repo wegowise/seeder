@@ -48,7 +48,7 @@ class Seeder
           conditions = keys.map { |k| "#{quote(k)} = #{value_to_sql(existing.send(k))}" }.join(" AND ")
           %(UPDATE #{ar_model.table_name} SET #{updates} WHERE #{conditions})
         else
-          columns = relevant_keys.join(", ")
+          columns = relevant_keys.map { |k| quote(k) }.join(", ")
           inserts = attributes.slice(*relevant_keys).values.map { |v| value_to_sql(v) }.join(", ")
           %(INSERT INTO #{ar_model.table_name} (#{columns}) VALUES (#{inserts}))
         end
