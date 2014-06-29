@@ -25,7 +25,7 @@ same address, but not both)
 If you wanted to seed your data with a couple users you could do the following:
 
 ```ruby
-users = [
+user_seeds = [
   {
     name: "J'onn J'onzz",
     age: 94,
@@ -40,7 +40,7 @@ users = [
   }
 ]
 
-Seeder.create { 'User' => users }, [:name, :address], User
+Seeder.create user_seeds, [:name, :address], User
 ```
 
 License

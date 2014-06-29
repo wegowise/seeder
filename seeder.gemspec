@@ -14,5 +14,8 @@ Gem::Specification.new do |s|
   s.files = Dir.glob(%w[{lib,spec}/**/*.rb [A-Z]*.{txt,rdoc,md} *.gemspec]) + %w{Rakefile}
   s.extra_rdoc_files = ["README.md", "LICENSE.txt"]
   s.license = 'MIT'
-  s.add_development_dependency 'rspec', '~> 2.6.0'
+
+  s.add_development_dependency('rspec-rails', '~> 3.0')
+  s.add_development_dependency('mysql2', '~> 0.3')
+  s.add_development_dependency('activerecord', '>= 3.2', '< 5.0')
 end
