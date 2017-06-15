@@ -76,10 +76,12 @@ describe Seeder do
     end
 
     it 'aborts when an exception is raised' do
-      expect(seeder).to receive(:create_new_records).and_raise
+      allow(seeder)
+        .to receive(:create_new_records)
+        .and_raise(ActiveRecord::RecordInvalid.new(Grade.new))
       initial_attributes = Grade.all.map(&:attributes)
 
-      expect { seeder.create }.to raise_error
+      expect { seeder.create }.to raise_error(ActiveRecord::RecordInvalid)
 
       expect(Grade.all.map(&:attributes)).to eq(initial_attributes)
     end
