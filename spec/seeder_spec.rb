@@ -93,7 +93,7 @@ describe Seeder do
       seeder.create
 
       expect(Grade.count).to eq(2)
-      expect(Grade.exists?(grade1)).to eq(false)
+      expect(Grade.exists?(grade1.id)).to eq(false)
 
       grade2.reload
       expect(grade2.student_id).to eq(1)
