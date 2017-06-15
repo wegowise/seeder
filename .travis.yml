@@ -16,8 +16,22 @@ env:
     - AR=4.0.13
     - AR=4.1.16
     - AR=4.2.8
+    - AR=5.0.3
+    - AR=5.1.1
 matrix:
   exclude:
+    - rvm: 1.9.3
+      env: AR=5.0.3
+    - rvm: 1.9.3
+      env: AR=5.1.1
+    - rvm: 2.0.0
+      env: AR=5.0.3
+    - rvm: 2.0.0
+      env: AR=5.1.1
+    - rvm: 2.1.10
+      env: AR=5.0.3
+    - rvm: 2.1.10
+      env: AR=5.1.1
     - rvm: 2.4.1
       env: AR=3.2.22.5
     - rvm: 2.4.1

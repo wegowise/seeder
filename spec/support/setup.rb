@@ -6,7 +6,9 @@ ActiveRecord::Base.establish_connection({
   database: 'seeder_test'
 })
 
-ActiveRecord::Base.connection.tables.each do |table|
+tables_method = ActiveRecord::VERSION::MAJOR >= 5 ? :data_sources : :tables
+
+ActiveRecord::Base.connection.public_send(tables_method).each do |table|
   ActiveRecord::Base.connection.drop_table table
 end
 
