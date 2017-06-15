@@ -1,3 +1,5 @@
+require 'support/active_record/connection_adapters/abstract_mysql_adapter'
+
 ActiveRecord::Base.establish_connection({
   adapter: 'mysql2',
   username: 'travis',
