@@ -4,15 +4,25 @@ language: ruby
 rvm:
   - 1.9.3
   - 2.0.0
-  - 2.1.2
-  - 2.2.3
+  - 2.1.10
+  - 2.2.7
+  - 2.3.4
+  - 2.4.1
 env:
   global:
     - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
   matrix:
-    - AR=3.2.18
-    - AR=4.0.5
-    - AR=4.1.1
-    - AR=4.2.5
+    - AR=3.2.22.5
+    - AR=4.0.13
+    - AR=4.1.16
+    - AR=4.2.8
+matrix:
+  exclude:
+    - rvm: 2.4.1
+      env: AR=3.2.22.5
+    - rvm: 2.4.1
+      env: AR=4.0.13
+    - rvm: 2.4.1
+      env: AR=4.1.16
 before_script:
   - mysql -e 'create database seeder_test;'
