@@ -2,8 +2,10 @@ require 'support/active_record/connection_adapters/abstract_mysql_adapter'
 
 ActiveRecord::Base.establish_connection({
   adapter: 'mysql2',
-  username: 'travis',
-  database: 'seeder_test'
+  database: ENV.fetch('MYSQL_DATABASE', 'seeder_test'),
+  host: ENV.fetch('MYSQL_HOST', 'localhost'),
+  password: ENV.fetch('MYSQL_PASSWORD', ''),
+  username: ENV.fetch('MYSQL_USER', 'seeder')
 })
 
 tables_method = ActiveRecord::VERSION::MAJOR >= 5 ? :data_sources : :tables
