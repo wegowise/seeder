@@ -15,9 +15,9 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = ["README.md", "LICENSE.txt"]
   s.license = 'MIT'
 
-  s.add_dependency('activerecord', '>= 3.2', '<= 6.0')
+  s.add_dependency('activerecord', '>= 5.0', '<= 6.0')
 
-  s.add_development_dependency('mysql2', '~> 0.3.10')
+  s.add_development_dependency('mysql2', '>= 0.4.4', '< 0.6.0')
   s.add_development_dependency('rspec', '~> 3.0')
   s.add_development_dependency('rake', '>= 10.4')
 end
