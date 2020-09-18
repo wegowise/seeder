@@ -1,5 +1,5 @@
-cache: bundler
 language: ruby
+cache: bundler
 services:
   - mysql
 rvm:
@@ -10,36 +10,36 @@ rvm:
   - 2.5.8
   - 2.6.6
   - 2.7.1
-env:
-  global:
-    - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
-  matrix:
-    - AR=5.0.3
-    - AR=5.1.1
-    - AR=5.2.2
-    - AR=6.0.3.3
+gemfile:
+  - gemfiles/5.0.gemfile
+  - gemfiles/5.1.gemfile
+  - gemfiles/5.2.gemfile
+  - gemfiles/6.0.gemfile
 matrix:
   exclude:
-    - rvm: 2.1.10
-      env: AR=5.0.3
-    - rvm: 2.1.10
-      env: AR=5.1.1
-    - rvm: 2.1.10
-      env: AR=6.0.3.3
-
     - rvm: 2.2.7
-      env: AR=6.0.3.3
+      gemfile: gemfiles/6.0.gemfile
+
+    - rvm: 2.1.10
+      gemfile: gemfiles/5.0.gemfile
+    - rvm: 2.1.10
+      gemfile: gemfiles/5.1.gemfile
+    - rvm: 2.1.10
+      gemfile: gemfiles/5.2.gemfile
+    - rvm: 2.1.10
+      gemfile: gemfiles/6.0.gemfile
 
     - rvm: 2.3.4
-      env: AR=6.0.3.3
+      gemfile: gemfiles/6.0.gemfile
 
     - rvm: 2.4.1
-      env: AR=6.0.3.3
+      gemfile: gemfiles/6.0.gemfile
 
-    - rvm: 2.5.8
-      env: AR=6.0.3.3
-
-    - rvm: 2.6.6
-      env: AR=6.0.3.3
+    - rvm: 2.7.1
+      gemfile: gemfiles/5.0.gemfile
+    - rvm: 2.7.1
+      gemfile: gemfiles/5.1.gemfile
+    - rvm: 2.7.1
+      gemfile: gemfiles/5.2.gemfile
 before_script:
   - mysql -e 'create database seeder_test;'
