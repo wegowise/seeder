@@ -1,6 +1,4 @@
-require 'active_record'
-require 'support/setup'
-require 'seeder'
+require 'spec_helper'
 
 describe Seeder do
   before(:each) { Grade.delete_all }
