@@ -1,19 +1,19 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe Seeder do
   before(:each) { Grade.delete_all }
 
   let(:seeder) do
     Seeder.new(
-      [{ 'student_id' => 1, 'course_id' => 1, 'grade' => 90 },
-       { 'student_id' => 1, 'course_id' => 2, 'grade' => 80 }],
+      [{"student_id" => 1, "course_id" => 1, "grade" => 90},
+        {"student_id" => 1, "course_id" => 2, "grade" => 80}],
       %w[student_id course_id],
       Grade
     )
   end
 
-  describe '.create' do
-    it 'should call create on a new instance' do
+  describe ".create" do
+    it "should call create on a new instance" do
       seeder = double
       expect(Seeder).to receive(:new).with(:data, :keys, :model)
         .and_return(seeder)
@@ -23,39 +23,39 @@ describe Seeder do
     end
   end
 
-  describe '#new' do
+  describe "#new" do
     specify { expect(seeder.model).to eq Grade }
     specify { expect(seeder.keys).to eq [:student_id, :course_id] }
     specify do
       expect(seeder.data).to eq(
-        [{ student_id: 1, course_id: 1, grade: 90 },
-         { student_id: 1, course_id: 2, grade: 80 }]
+        [{student_id: 1, course_id: 1, grade: 90},
+          {student_id: 1, course_id: 2, grade: 80}]
       )
     end
   end
 
-  describe '#delete_outdated_records' do
+  describe "#delete_outdated_records" do
     before do
       Grade.create!(student_id: 1, course_id: 3)
       Grade.create!(student_id: 1, course_id: 1)
     end
 
-    it 'should delete outdated records' do
+    it "should delete outdated records" do
       expect { seeder.delete_outdated_records }.to change { Grade.count }.to(1)
       expect(Grade.first.course_id).to eq 1
     end
   end
 
-  describe '#update_existing_records' do
+  describe "#update_existing_records" do
     let!(:existing_grade) { Grade.create!(student_id: 1, course_id: 1) }
 
-    it 'should delete outdated records' do
+    it "should delete outdated records" do
       expect { seeder.update_existing_records }
         .to change { existing_grade.reload.grade }.to(90)
     end
   end
 
-  describe '#create_new_records' do
+  describe "#create_new_records" do
     let!(:existing_grade) { Grade.create!(student_id: 1, course_id: 1) }
 
     it 'should create new records when there are no existing records with
@@ -65,15 +65,15 @@ describe Seeder do
     end
   end
 
-  describe '#create' do
-    it 'calls the delete, update and create methods in order' do
+  describe "#create" do
+    it "calls the delete, update and create methods in order" do
       expect(seeder).to receive(:delete_outdated_records).ordered
       expect(seeder).to receive(:update_existing_records).ordered
       expect(seeder).to receive(:create_new_records).ordered
       seeder.create
     end
 
-    it 'aborts when an exception is raised' do
+    it "aborts when an exception is raised" do
       allow(seeder)
         .to receive(:create_new_records)
         .and_raise(ActiveRecord::RecordInvalid.new(Grade.new))
@@ -84,7 +84,7 @@ describe Seeder do
       expect(Grade.all.map(&:attributes)).to eq(initial_attributes)
     end
 
-    it 'produces the appropriate results' do
+    it "produces the appropriate results" do
       grade1 = Grade.create!(student_id: 1, course_id: 3)
       grade2 = Grade.create!(student_id: 1, course_id: 1)
 
@@ -104,5 +104,4 @@ describe Seeder do
       expect(grade3.grade).to eq(80)
     end
   end
-
 end
