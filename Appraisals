@@ -17,3 +17,8 @@ appraise '7.0' do
   gem 'activerecord', '~> 7.0.0'
   gem 'mysql2', '~> 0.5.3'
 end
+
+appraise '7.1' do
+  gem 'activerecord', '~> 7.1.0'
+  gem 'mysql2', '~> 0.5.5'
+end
